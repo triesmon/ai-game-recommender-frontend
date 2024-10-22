@@ -1,0 +1,63 @@
+
+svg {
+    float: left;
+    cursor: pointer;
+}
+
+.result-container {
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
+    margin: 10px 0;
+    transition: transform 0.2s;
+}
+
+.result-image {
+    height: auto;
+    width: 100%; /* Make the image responsive by default */
+    min-width: 200px;
+    max-width: 100%;
+}
+
+.result-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin: 0px;
+}
+
+.result-description {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #777;
+}
+
+.button-bar {
+
+}
+
+.metadata {
+    /* Flex space evenly */
+    white-space: nowrap;
+}
+
+.metadata > * {
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+    font-size: 13px;
+}
+
+.trailer-container {
+    position: relative;
+    height: auto;
+    width: auto;
+}
+
+.icon-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

@@ -1,0 +1,15 @@
+
+.page-container {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    width: 90%;
+}
+
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    margin: 0 auto;
+}
+
