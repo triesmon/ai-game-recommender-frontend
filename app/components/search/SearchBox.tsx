@@ -35,6 +35,7 @@ export default function SearchBox() {
             itemToString={item => (item ? item.name : '')}
             inputValue={inputValue}
             onInputValueChange={value => setInputValue(value)}
+            onStateChange={({ isOpen }) => setIsSearching(isOpen)}
         >
             {
                 ({
@@ -47,8 +48,6 @@ export default function SearchBox() {
                      selectedItem,
                      getRootProps,
                  }) => {
-                    setIsSearching(isOpen);
-
                     return (
                         <div>
                             <label {...getLabelProps()}></label>

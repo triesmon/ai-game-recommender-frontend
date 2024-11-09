@@ -8,8 +8,8 @@ import BookmarkOutlinedIcon from '@mui/icons-material/BookmarkOutlined';
 import BookmarkAddOutlinedIcon from '@mui/icons-material/BookmarkAddOutlined';
 import PlayCircle from '@mui/icons-material/PlayCircle';
 import {Button} from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import {SortBy} from "@/app/components/search/Filter";
-import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 
 type ResultProps = {
     result: Game;
@@ -51,7 +51,7 @@ const Result: React.FC<ResultProps> = ({result, onFindSimilar, sortBy}) => {
     return (
         <div ref={myRef} id={'result-' + result.id} className='result-container'>
             <Grid container spacing={2}>
-                <Grid container direction={"column"} xs={12} sm={6}>
+                <Grid container direction={"column"} size={{ xs: 12, sm: 6}}>
                     <Grid>
                         <h3 className='result-name'>{result['name']}</h3>
                         <p className='result-description'>{result['short_description']}</p>
@@ -77,7 +77,7 @@ const Result: React.FC<ResultProps> = ({result, onFindSimilar, sortBy}) => {
                             )}
                         </Grid>
                     </Grid>
-                    <Grid xs={12} sm={6} className={'button-bar'}>
+                    <Grid size={{ xs: 12, sm: 6}} className={'button-bar'}>
                         <div className={'metadata'}>
                             {isResultIdSaved(result['id']) &&
                                 <Button variant={'outlined'}>
@@ -104,7 +104,7 @@ const Result: React.FC<ResultProps> = ({result, onFindSimilar, sortBy}) => {
                         </div>
                     </Grid>
                 </Grid>
-                <Grid xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6}}>
                     <div className={"trailer-container"}>
                         {!trailerPlaying && <img src={result['header_image']}
                                                  onClick={() => result.movies.length > 0 && setTrailerPlaying(true)}
