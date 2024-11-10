@@ -10,10 +10,10 @@ import {useSearchParams} from "next/navigation";
 import {SearchContextType} from "@/app/search/searchContextType";
 import {base_url, SearchContext} from "@/app/components/constants";
 import 'normalize.css';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import DataProvider from "@/app/components/server/DataProvider";
 import {SortBy, TabOption} from "@/app/components/search/Filter";
 import {handleTabSetting} from "@/app/components/header/header";
+import SearchBox from "@/app/components/search/SearchBox";
 
 export default function AppWrapper() {
     return (
@@ -46,13 +46,14 @@ function Page() {
         setResults,
         similarGame,
         sortBy,
-        setSortBy
+        setSortBy,
+        isSearching
     } = useSearchContext();
     const searchParams = useSearchParams()
     const [visibleResults, setVisibleResults] = useState<number>(50);
-    const [page, setPage] = useState<number>(1);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -65,16 +66,15 @@ function Page() {
     }, []);
 
     useEffect(() => {
-        const hasId = searchParams.get('id');
         (async () => {
             handleTabSetting(filter.tab_option, setResults, searchParams, findSimilar);
         })();
 
     }, [searchType, searchParams])
 
-
     return (
         <div>
+
             {filter?.tab_option !== TabOption.Saved && (
                 <>
                     <label>Steam Rating %</label>
@@ -129,7 +129,6 @@ function Page() {
                         </>
                     )}
 
-
                     <ToggleButtonGroup
                         value={filter.categories}
                         onChange={(e, value) => {
@@ -152,79 +151,79 @@ function Page() {
                 </>
             )}
 
-            <DataProvider repo=""></DataProvider>
+            <DataProvider repo=""/>
 
             {(similarGame || filter.tab_option != TabOption.Search) && (
                 <div className={"sticky"}>
-                    <KeyboardArrowUpIcon fontSize={"large"} onClick={() => window.scrollTo(0, 0)}></KeyboardArrowUpIcon>
+                    <SearchBox/>
+
                     {filter?.tab_option == TabOption.Search && (
                         <>
-                        <span>Games Similar To: {similarGame?.name}</span>
-                        <Button
-                            id="demo-positioned-button"
-                            aria-controls={open ? 'demo-positioned-menu' : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={open ? 'true' : undefined}
-                            onClick={handleClick}
-                        >
-                            Sort By: {sortBy}
-                        </Button>
-                        <Menu
-                            id="demo-positioned-menu"
-                            aria-labelledby="demo-positioned-button"
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                        >
-                            <MenuItem onClick={() => {
-                                setSortBy(SortBy.Similarity)
-                                handleClose()
-                            }} >Similarity</MenuItem>
-                            <MenuItem onClick={() => {
-                                setSortBy(SortBy.Uniqueness)
-                                handleClose()
-                            }} >Uniqueness</MenuItem>
-                        </Menu>
+                            <Button
+                                id="demo-positioned-button"
+                                aria-controls={open ? 'demo-positioned-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                                onClick={handleClick}
+                            >
+                                Sort By: {sortBy}
+                            </Button>
+                            <Menu
+                                id="demo-positioned-menu"
+                                aria-labelledby="demo-positioned-button"
+                                anchorEl={anchorEl}
+                                open={open}
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }}
+                            >
+                                <MenuItem onClick={() => {
+                                    setSortBy(SortBy.Similarity)
+                                    handleClose()
+                                }}>Similarity</MenuItem>
+                                <MenuItem onClick={() => {
+                                    setSortBy(SortBy.Uniqueness)
+                                    handleClose()
+                                }}>Uniqueness</MenuItem>
+                            </Menu>
                         </>
-                        )}
-                        {filter?.tab_option == TabOption.Recent && (
-                            <span>Recently Released Games</span>
-                        )}
-                        {filter?.tab_option == TabOption.Saved && (
-                            <span>Your Bookmarked Games</span>
-                        )}
-                        </div>
                     )}
-
-                    <div className={"results-container"}>
-                        {filteredResults.slice(0, visibleResults).map((result) =>
-                            <Result
-                                key={result.id}
-                                result={result}
-                                onFindSimilar={findSimilar}
-                                sortBy={sortBy}
-                            />)}
-                    </div>
-                    {/*<Button className={"show-more-button"} onClick={() => {*/}
-                    {/*    if (similarGame) {*/}
-                    {/*        if (filteredResults.length > visibleResults) {*/}
-                    {/*            setVisibleResults(visibleResults + 10)*/}
-                    {/*        }else {*/}
-                    {/*            setPage(page + 1)*/}
-                    {/*            findSimilar(similarGame, false, page);*/}
-                    {/*        }*/}
-                    {/*    }*/}
-                    {/*}}>Show More</Button>*/}
+                    {filter?.tab_option == TabOption.Recent && (
+                        <span>Recently Released Games</span>
+                    )}
+                    {filter?.tab_option == TabOption.Saved && (
+                        <span>Your Bookmarked Games</span>
+                    )}
                 </div>
-            );
+            )}
 
-            }
+            <div className={"results-container"}>
+                {filteredResults.slice(0, visibleResults).map((result) =>
+                    <Result
+                        key={result.id}
+                        result={result}
+                        onFindSimilar={findSimilar}
+                        sortBy={sortBy}
+                    />)}
+            </div>
+            {/*<Button className={"show-more-button"} onClick={() => {*/}
+            {/*    if (similarGame) {*/}
+            {/*        if (filteredResults.length > visibleResults) {*/}
+            {/*            setVisibleResults(visibleResults + 10)*/}
+            {/*        }else {*/}
+            {/*            setPage(page + 1)*/}
+            {/*            findSimilar(similarGame, false, page);*/}
+            {/*        }*/}
+            {/*    }*/}
+            {/*}}>Show More</Button>*/}
+        </div>
+    );
+
+}
 

@@ -3,16 +3,17 @@
 import React from 'react';
 import Downshift from 'downshift';
 import {useSearchContext} from "../../page";
-import './SearchBox.css';
 import axios from "axios";
+import styles from './SearchBox.module.css';
 import {Game} from "../shared/Game";
 import {Input} from "@mui/material";
 import {base_url} from "@/app/components/constants";
+import SearchIcon from '@mui/icons-material/Search';
 
 export default function SearchBox() {
     const [items, setItems] = React.useState<Game[]>([]);
     const [inputValue, setInputValue] = React.useState('');
-    const {findSimilar, setIsSearching} = useSearchContext();
+    const {findSimilar, similarGame, setIsSearching} = useSearchContext();
 
     React.useEffect(() => {
         // Your side effect logic here
@@ -29,13 +30,19 @@ export default function SearchBox() {
         }
     }, [inputValue]); // Effect runs when either of these values change
 
+    // Update the input to reflect value of current search (e.g. on initial load)
+    React.useEffect(() => {
+        if (similarGame) {
+            setInputValue(similarGame.name);
+        }
+    }, [similarGame]);
     return (
         <Downshift
             onChange={selection => findSimilar(selection, true)}
             itemToString={item => (item ? item.name : '')}
             inputValue={inputValue}
             onInputValueChange={value => setInputValue(value)}
-            onStateChange={({ isOpen }) => setIsSearching(isOpen)}
+            onStateChange={({isOpen}) => isOpen !== undefined && setIsSearching(isOpen)}
         >
             {
                 ({
@@ -49,15 +56,18 @@ export default function SearchBox() {
                      getRootProps,
                  }) => {
                     return (
-                        <div>
+                        <div className={styles.searchBox}>
                             <label {...getLabelProps()}></label>
-                            <div
-                                {...getRootProps({}, {suppressRefError: true})}
-                            >
-                                <Input
-                                    className={"search-input"}
-                                    placeholder={"Search for a game"}
-                                    {...getInputProps()} />
+                            <div className={styles.outerInputContainer} {...getRootProps({}, {suppressRefError: true})}>
+                                <div className={styles.inputContainer}>
+                                    <SearchIcon className={styles.searchIcon} fontSize={"small"}/>
+                                    <Input
+                                        className={styles.searchInput}
+                                        placeholder={"Search for a game"}
+                                        {...getInputProps()}
+                                    />
+                                </div>
+
                             </div>
                             <ul {...getMenuProps()}>
                                 {isOpen && items.map((item, index) => (

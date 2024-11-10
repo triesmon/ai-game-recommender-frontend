@@ -13,16 +13,11 @@ type ExternalLinkProps = {
 
 export const ExternalScrollSavingLink: React.FC<ExternalLinkProps> = ({ href, children, scrollTo }) => {
 
-    const {results} = useSearchContext();
-
     const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
 
         // save scroll position to local storage
         localStorage.setItem('scrollTo', scrollTo.toString());
-
-        // save results to local storage
-        // localStorage.setItem('results', JSON.stringify(results));
 
         window.location.href = href;
     };

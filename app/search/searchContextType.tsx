@@ -5,8 +5,8 @@ import {Filter, SortBy} from "@/app/components/search/Filter";
 export type SearchContextType = {
     loading: boolean;
 
-    isSearching: boolean;
-    setIsSearching: React.Dispatch<React.SetStateAction<boolean>>;
+    isSearching: boolean | undefined;
+    setIsSearching: React.Dispatch<React.SetStateAction<boolean | undefined>>;
 
     findSimilar: (result: Game, updateHistory?: boolean, page?:number) => void;
     similarGame: Game | null;

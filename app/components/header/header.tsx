@@ -1,7 +1,6 @@
 'use client'
 
-import SearchBox from "@/app/components/search/SearchBox";
-import {Box, Tab, Tabs, ToggleButton, ToggleButtonGroup} from "@mui/material";
+import {Box, Tab, Tabs} from "@mui/material";
 import React from "react";
 import {fetchGame, useSearchContext} from "@/app/page";
 import {ReadonlyURLSearchParams, useSearchParams} from "next/navigation";
@@ -44,27 +43,23 @@ export default function Header() {
     };
     return (
         <div style={styles}>
-            <SearchBox></SearchBox>
+            <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+                <Tabs value={filter ? filter.tab_option : TabOption.Search}
+                      onChange={(_e, value) => {
+                          handleTabSetting(value, setResults, searchParams, findSimilar);
 
-            {!isSearching && (
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={filter ? filter.tab_option : TabOption.Search}
-                          onChange={(_e, value) => {
-                              handleTabSetting(value, setResults, searchParams, findSimilar);
+                          setFilter((oldFilter) => ({
+                              ...(oldFilter || {}),
+                              tab_option: value
+                          }));
+                      }}
+                >
 
-                              setFilter((oldFilter) => ({
-                                  ...(oldFilter || {}),
-                                  tab_option: value
-                              }));
-                          }}
-                    >
-
-                        <Tab label="Search" value={TabOption.Search}/>
-                        <Tab label="Recent" value={TabOption.Recent}/>
-                        <Tab label="Saved" value={TabOption.Saved}/>
-                    </Tabs>
-                </Box>
-            )}
+                    <Tab label="Search" value={TabOption.Search}/>
+                    <Tab label="Recent" value={TabOption.Recent}/>
+                    <Tab label="Saved" value={TabOption.Saved}/>
+                </Tabs>
+            </Box>
         </div>
     );
 }

@@ -1,0 +1,40 @@
+.searchBox li {
+    /* hide dot */
+    list-style-type: none;
+
+    /* align left */
+    text-align: left;
+
+    /* vertical align */
+    display: flex;
+    align-items: center;
+}
+
+.searchBox li > img {
+    padding-right: 20px
+}
+
+.outerInputContainer {
+    /*  center align input */
+    display: flex;
+    justify-content: center;
+}
+
+.inputContainer {
+    /* make div take up minimum space */
+    display: inline-block;
+    position: relative;
+}
+
+.searchIcon {
+    position: absolute;
+    /* center align icon vertically */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.searchInput {
+    /* create space for search icon*/
+    padding-left: 20px;
+    width: 300px;
+}
